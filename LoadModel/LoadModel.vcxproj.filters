@@ -24,6 +24,9 @@
     <ClCompile Include="Shader.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -35,5 +38,12 @@
     <ClInclude Include="Shader.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="vertexSource.txt" />
+    <Text Include="fragmentSource.txt" />
   </ItemGroup>
 </Project>
