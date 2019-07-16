@@ -41,9 +41,17 @@
     <ClInclude Include="Camera.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="vertexSource.txt" />
-    <Text Include="fragmentSource.txt" />
+    <Text Include="fragmentSource.frag" />
+    <Text Include="vertexSource.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="container.jpg">
+      <Filter>資源檔</Filter>
+    </Image>
   </ItemGroup>
 </Project>

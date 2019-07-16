@@ -138,10 +138,14 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="fragmentSource.txt" />
-    <Text Include="vertexSource.txt" />
+    <Text Include="fragmentSource.frag" />
+    <Text Include="vertexSource.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="container.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
