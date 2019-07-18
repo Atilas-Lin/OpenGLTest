@@ -21,13 +21,13 @@ void Mesh::Draw(Shader * shader)
 		{
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, textures[i].id);
-			//shader->setUniform1i("material.diffuse", 0);
+			shader->setInt("material.diffuse", Shader::DIFFUSE);
 		}
 		else if (textures[i].type == "texture_specular")
 		{
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, textures[i].id);
-			//shader->setUniform1i("material.diffuse", 1);
+			shader->setInt("material.specular", Shader::SPECULAR);
 		}
 
 		// Draw mesh

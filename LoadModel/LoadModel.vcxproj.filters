@@ -27,6 +27,15 @@
     <ClCompile Include="Camera.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="LightDirectional.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="LightPoint.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -44,6 +53,15 @@
     <ClInclude Include="stb_image.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="LightDirectional.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="LightPoint.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="fragmentSource.frag" />
@@ -51,6 +69,15 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="container.jpg">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="container2.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="container2_specular.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="emission.jpg">
       <Filter>資源檔</Filter>
     </Image>
   </ItemGroup>

@@ -127,7 +127,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="LightDirectional.cpp" />
+    <ClCompile Include="LightPoint.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
@@ -136,6 +139,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="LightDirectional.h" />
+    <ClInclude Include="LightPoint.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="stb_image.h" />
@@ -146,6 +152,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="container.jpg" />
+    <Image Include="container2.png" />
+    <Image Include="container2_specular.png" />
+    <Image Include="emission.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

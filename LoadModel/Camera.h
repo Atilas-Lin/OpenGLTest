@@ -8,7 +8,9 @@ enum Camera_Movement {
 	FORWARD,
 	BACKWARD,
 	LEFT,
-	RIGHT
+	RIGHT,
+	UP,
+	DOWN
 };
 
 // Default camera values
@@ -34,6 +36,9 @@ public:
 	float MovementSpeed;
 	float MouseSensitivity;
 	float Zoom;
+	float speedX;
+	float speedY;
+	float speedZ;
 
 	// Constructor with vectors
 	Camera(glm::vec3 position = glm::vec3(0, 0, 0), glm::vec3 up = glm::vec3(0, 1.0f, 0), float yaw = YAW, float pitch = PITCH) :Forward(glm::vec3(0, 0, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
@@ -60,6 +65,7 @@ public:
 	void ProcessKeyboard(Camera_Movement direction, float deltaTime);
 	void ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch = true);
 	void ProcessMouseScroll(float yoffset);
+	void UpdateCameraPos();
 
 private:
 	void UpdateCameraVectors();

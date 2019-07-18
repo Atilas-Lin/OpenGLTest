@@ -12,6 +12,14 @@ public:
 	const char* vertexSource;
 	const char* fragmentSource;
 	unsigned int ID; //Shader Program ID
+
+	enum Slot
+	{
+		DIFFUSE,   // defult 0
+		SPECULAR,  // defult 1
+		EMISSION   // defult 2
+	};
+
 	void use();
 	/*uinform setter*/
 	void setBool(const std::string &name, bool value) const;

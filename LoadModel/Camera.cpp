@@ -18,6 +18,12 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
 		Position -= Right * velocity;
 	if (direction == RIGHT)
 		Position += Right * velocity;
+	if (direction == UP)
+		Position += Up * velocity;
+	if (direction == DOWN)
+		Position -= Up * velocity;
+	
+	//UpdateCameraPos();
 }
 
 // Processes input received from a mouse input system.
@@ -52,6 +58,11 @@ void Camera::ProcessMouseScroll(float yoffset)
 		Zoom = 1.0f;
 	if (Zoom >= 45.0f)
 		Zoom = 45.0f;
+}
+
+void Camera::UpdateCameraPos()
+{
+	Position += Forward * speedZ * 0.1f + Right * speedX * 0.1f + Up * speedY * 0.1f;
 }
 
 // Caculates the forward vector from the Camera's (update) Euler Angles
