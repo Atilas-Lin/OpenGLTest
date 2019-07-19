@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include "LightDirectional.h"
 #include "LightPoint.h"
+#include "LightSpot.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -39,7 +40,7 @@ float lastFrame = 0.0f;
 #pragma endregion
 
 #pragma region Light Declare
-LightPoint light(glm::vec3(1.0f, 1.0f, -1.0f), glm::vec3(glm::radians(0.0f), glm::radians(0.0f), 0));
+LightSpot light(glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(glm::radians(90.0f), 0, 0));
 #pragma endregion
 
 #pragma region Model Data
@@ -250,9 +251,11 @@ int main() {
 		myShader->setVec3("lightPos", light.position);
 		myShader->setVec3("lightDirUniform", light.direction);
 		myShader->setVec3("lightColor", light.color);
-		myShader->setFloat("ilghtP.constant", 1.0f);
-		myShader->setFloat("ilghtP.linear", 0.09f);
-		myShader->setFloat("ilghtP.quadratic", 0.032f);
+		//myShader->setFloat("lightP.constant", 1.0f);
+		//myShader->setFloat("lightP.linear", 0.09f);
+		//myShader->setFloat("lightP.quadratic", 0.032f);
+		myShader->setFloat("lightS.cosPhyInner", light.cosPhyInner);
+		myShader->setFloat("lightS.cosPhyOutter", light.cosPhyOutter);
 
 		myShader->setVec3("cameraPos", camera.Position);
 

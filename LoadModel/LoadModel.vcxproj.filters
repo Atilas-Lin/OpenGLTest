@@ -36,6 +36,9 @@
     <ClCompile Include="LightPoint.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="LightSpot.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -60,6 +63,9 @@
       <Filter>標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="LightPoint.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="LightSpot.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>

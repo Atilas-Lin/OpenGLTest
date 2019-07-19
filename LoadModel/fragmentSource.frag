@@ -5,21 +5,27 @@ in vec3 Normal;
 in vec2 TexCoord;//uv®y¼Ð
 
 struct Material {
-   vec3 ambient;
-   sampler2D diffuse;
-   sampler2D specular;
-   sampler2D emission;
-   float shininess;
+	vec3 ambient;
+	sampler2D diffuse;
+	sampler2D specular;
+	sampler2D emission;
+	float shininess;
 };
 
 struct LightPoint {
-   float constant;
-   float linear;
-   float quadratic;
+	float constant;
+	float linear;
+	float quadratic;
+};
+
+struct LightSpot {
+	float cosPhyInner;
+	float cosPhyOutter;
 };
 
 uniform Material material;
 uniform LightPoint lightP;
+uniform LightSpot lightS;
 
 //uniform sampler2D ourTexture;
 uniform vec3 objColor;
@@ -35,9 +41,9 @@ void main(){
     vec3 norm = normalize(Normal);
 
 	float dist = length(lightPos - FragPos);
-	float attenuation = 1.0f / (lightP.constant + lightP.linear * dist + lightP.quadratic * (dist * dist));
+	float attenuation = 1.0 / (lightP.constant + lightP.linear * dist + lightP.quadratic * (dist * dist));
 
-	vec3 lightDir = normalize(lightPos - FragPos);
+	vec3 lightDir = normalize(lightPos - FragPos); // vector pointing to the light, from fragment pos
 	vec3 reflectVec = reflect(-lightDir, norm);
 	vec3 cameraVec = normalize(cameraPos - FragPos);
 
@@ -54,9 +60,10 @@ void main(){
 	// emission
 	vec3 emission = texture(material.emission, TexCoord).rgb;
 
-	ambient *= attenuation;
-	diffuse *= attenuation;
-	specular *= attenuation;
+	float cosTheta = dot( -lightDir, normalize(-1 * lightDirUniform));
+	                  // clamp() constraint the first parameter between second and third parameters 
+	float spotRatio = clamp((cosTheta - lightS.cosPhyOutter) / (lightS.cosPhyInner - lightS.cosPhyOutter), 0.0, 1.0);
 
-	FragColor = vec4( (ambient + diffuse + specular) * objColor, 1.0f);
+	FragColor = vec4( (ambient + (diffuse + specular) * spotRatio) * objColor, 1.0f);
+	
 }   
