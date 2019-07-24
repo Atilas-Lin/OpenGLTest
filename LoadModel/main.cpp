@@ -17,30 +17,49 @@
 using namespace std;
 
 #pragma region Screen functions and Setting
-// settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow* window);
-void mouse_callback(GLFWwindow* window, double xPos, double yPos);
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+	// settings
+	const unsigned int SCR_WIDTH = 800;
+	const unsigned int SCR_HEIGHT = 600;
+	
+	void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+	void processInput(GLFWwindow* window);
+	void mouse_callback(GLFWwindow* window, double xPos, double yPos);
+	void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 #pragma endregion
 
 #pragma region Camera Daclare and params
-// camera
-Camera camera(glm::vec3(0, 0, 3.0f));
-float lastX = SCR_WIDTH / 2.0f;
-float lastY = SCR_HEIGHT / 2.0f;
-bool firstMouse = true;
-
-// timing
-float deltaTime = 0.0f;	// time between current frame and last frame
-float lastFrame = 0.0f;
+	// camera
+	Camera camera(glm::vec3(0, 0, 3.0f));
+	float lastX = SCR_WIDTH / 2.0f;
+	float lastY = SCR_HEIGHT / 2.0f;
+	bool firstMouse = true;
+	
+	// timing
+	float deltaTime = 0.0f;	// time between current frame and last frame
+	float lastFrame = 0.0f;
 #pragma endregion
 
 #pragma region Light Declare
-LightSpot light(glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(glm::radians(90.0f), 0, 0));
+	LightDirectional lightD(glm::vec3(1.0f, 1.0f, -1.0f), 
+		glm::vec3(glm::radians(90.0f), 0, 0), 
+		glm::vec3(1.0f, 1.0f, 1.0f));
+
+	LightPoint lightP0(glm::vec3(1.0f, 0.0f, 0.0f), 
+		glm::vec3(glm::radians(45.0f), glm::radians(45.0f), 0),
+		glm::vec3(1.0f, 0.0f, 0.0f));
+	LightPoint lightP1(glm::vec3(0.0f, 1.0f, 0.0f), 
+		glm::vec3(glm::radians(45.0f), glm::radians(45.0f), 0),
+		glm::vec3(0.0f, 1.0f, 0.0f));
+	LightPoint lightP2(glm::vec3(0.0f, 0.0f, 1.0f), 
+		glm::vec3(glm::radians(45.0f), glm::radians(45.0f), 0),
+		glm::vec3(0.0f, 0.0f, 1.0f));
+	LightPoint lightP3(glm::vec3(1.0f, 1.0f, 1.0f),
+		glm::vec3(glm::radians(45.0f), glm::radians(45.0f), 0),
+		glm::vec3(1.0f, 1.0f, 1.0f));
+
+	LightSpot lightS(glm::vec3(0.0f, 8.0f, 0.0f),
+		glm::vec3(glm::radians(90.0f), glm::radians(0.0f), 0),
+		glm::vec3(10.0f, 10.0f, 10.0f));
 #pragma endregion
 
 #pragma region Model Data
@@ -133,39 +152,39 @@ unsigned int LoadImageToGPU(const char* fileName, GLint internalFormat, GLenum f
 int main() {
 
 	#pragma region Open a Window
-	glfwInit();
-	// OpenGLª©¥»
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwInit();
+		// OpenGLª©¥»
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	// open GLFW Window
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Load Model Test", NULL, NULL);
+		// open GLFW Window
+		GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Load Model Test", NULL, NULL);
 
-	if (window == NULL)
-	{
-		cout << "open window failed." << endl;
-		glfwTerminate();
-		return EXIT_FAILURE;
-	}
+		if (window == NULL)
+		{
+			cout << "open window failed." << endl;
+			glfwTerminate();
+			return EXIT_FAILURE;
+		}
 
-	glfwMakeContextCurrent(window);
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glfwSetCursorPosCallback(window, mouse_callback);
-	glfwSetScrollCallback(window, scroll_callback);
+		glfwMakeContextCurrent(window);
+		glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+		//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		glfwSetCursorPosCallback(window, mouse_callback);
+		glfwSetScrollCallback(window, scroll_callback);
 
-	//Init GLEW
-	glewExperimental = true;
-	if (glewInit() != GLEW_OK)
-	{
-		cout << "glew init failed." << endl;
-		glfwTerminate();
-		return EXIT_FAILURE;
-	}
+		//Init GLEW
+		glewExperimental = true;
+		if (glewInit() != GLEW_OK)
+		{
+			cout << "glew init failed." << endl;
+			glfwTerminate();
+			return EXIT_FAILURE;
+		}
 
-	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT); 
-#pragma endregion
+		glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT); 
+	#pragma endregion
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -183,48 +202,48 @@ int main() {
 	#pragma endregion
 
 	#pragma region Init and Load Models to VAO, VBO
-	unsigned int VBO, VAO;
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
+		unsigned int VBO, VAO;
+		glGenVertexArrays(1, &VAO);
+		glGenBuffers(1, &VBO);
 
-	glBindVertexArray(VAO);
+		glBindVertexArray(VAO);
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	// position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-	// normal attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-	// texture coord attribute
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-	
+		// position attribute
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(0);
+		// normal attribute
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(1);
+		// texture coord attribute
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+		glEnableVertexAttribArray(2);
 	#pragma endregion
 
 	#pragma region Init and Load Textures
-	// load and create a texture 
-	//unsigned int texture1, texture2;
-	//texture1 = LoadImageToGPU("container.jpg", GL_RGB, GL_RGB, 0);
+		// load and create a texture 
+		//unsigned int texture1, texture2;
+		//texture1 = LoadImageToGPU("container.jpg", GL_RGB, GL_RGB, 0);
 	#pragma endregion
 
 	// render loop
 	while (!glfwWindowShouldClose(window))
 	{
 		#pragma region MVP matrices
-		glm::mat4 modelMat;
-		glm::mat4 viewMat;
-		glm::mat4 projectMat;
-		viewMat = camera.GetViewMatrix();
-		projectMat = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / SCR_HEIGHT, 0.1f, 100.0f);
+			glm::mat4 modelMat;
+			glm::mat4 viewMat;
+			glm::mat4 projectMat;
+			viewMat = camera.GetViewMatrix();
+			projectMat = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / SCR_HEIGHT, 
+				0.1f, 100.0f);
 		#pragma endregion
 
 		#pragma region pre-frame time of Camera
-		float currentFrame = glfwGetTime();
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
+			float currentFrame = glfwGetTime();
+			deltaTime = currentFrame - lastFrame;
+			lastFrame = currentFrame;
 		#pragma endregion
 
 		// Process input
@@ -246,16 +265,45 @@ int main() {
 		/* Set Material -> Uniforms */
 		myShader->setMat4("viewMat", viewMat);
 		myShader->setMat4("projectMat", projectMat);
+
 		myShader->setVec3("objColor", 1.0f, 1.0f, 1.0f);
 		myShader->setVec3("ambientColor", 0.1f, 0.1f, 0.1f);
-		myShader->setVec3("lightPos", light.position);
-		myShader->setVec3("lightDirUniform", light.direction);
-		myShader->setVec3("lightColor", light.color);
-		//myShader->setFloat("lightP.constant", 1.0f);
-		//myShader->setFloat("lightP.linear", 0.09f);
-		//myShader->setFloat("lightP.quadratic", 0.032f);
-		myShader->setFloat("lightS.cosPhyInner", light.cosPhyInner);
-		myShader->setFloat("lightS.cosPhyOutter", light.cosPhyOutter);
+
+		myShader->setVec3("lightD.pos", lightD.position);
+		myShader->setVec3("lightD.dirToLight", lightD.direction);
+		myShader->setVec3("lightD.color", lightD.color);
+
+		myShader->setVec3("lightP0.pos", lightP0.position);
+		myShader->setVec3("lightP0.color", lightP0.color);
+		myShader->setFloat("lightP0.constant", lightP0.constant);
+		myShader->setFloat("lightP0.linear", lightP0.linear);
+		myShader->setFloat("lightP0.quadratic", lightP0.quadratic);
+
+		myShader->setVec3("lightP1.pos", lightP1.position);
+		myShader->setVec3("lightP1.color", lightP1.color);
+		myShader->setFloat("lightP1.constant", lightP1.constant);
+		myShader->setFloat("lightP1.linear", lightP1.linear);
+		myShader->setFloat("lightP1.quadratic", lightP1.quadratic);
+
+		myShader->setVec3("lightP2.pos", lightP2.position);
+		myShader->setVec3("lightP2.color", lightP2.color);
+		myShader->setFloat("lightP2.constant", lightP2.constant);
+		myShader->setFloat("lightP2.linear", lightP2.linear);
+		myShader->setFloat("lightP2.quadratic", lightP2.quadratic);
+
+		myShader->setVec3("lightP3.pos", lightP3.position);
+		myShader->setVec3("lightP3.color", lightP3.color);
+		myShader->setFloat("lightP3.constant", lightP3.constant);
+		myShader->setFloat("lightP3.linear", lightP3.linear);
+		myShader->setFloat("lightP3.quadratic", lightP3.quadratic);
+
+		myShader->setVec3("lightS.pos", lightS.position);
+		myShader->setVec3("lightS.color", lightS.color);
+		myShader->setFloat("lightS.constant", lightS.constant);
+		myShader->setFloat("lightS.linear", lightS.linear);
+		myShader->setFloat("lightS.quadratic", lightS.quadratic);
+		myShader->setFloat("lightS.cosPhyInner", lightS.cosPhyInner);
+		myShader->setFloat("lightS.cosPhyOutter", lightS.cosPhyOutter);
 
 		myShader->setVec3("cameraPos", camera.Position);
 
