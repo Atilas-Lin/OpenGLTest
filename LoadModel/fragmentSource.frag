@@ -121,12 +121,13 @@ void main(){
 	vec3 uNormal = normalize(Normal);
 	vec3 dirToCamera = normalize(cameraPos - FragPos); // 指向camera的向量
 
-	//finalResult += CalcLightDirectional(lightD, uNormal, dirToCamera);
-	//finalResult += CalcLightPoint(lightP0, uNormal, dirToCamera);
-	//finalResult += CalcLightPoint(lightP1, uNormal, dirToCamera);
-	//finalResult += CalcLightPoint(lightP2, uNormal, dirToCamera);
-	//finalResult += CalcLightPoint(lightP3, uNormal, dirToCamera);
+	finalResult += CalcLightDirectional(lightD, uNormal, dirToCamera);
+	finalResult += CalcLightPoint(lightP0, uNormal, dirToCamera);
+	finalResult += CalcLightPoint(lightP1, uNormal, dirToCamera);
+	finalResult += CalcLightPoint(lightP2, uNormal, dirToCamera);
+	finalResult += CalcLightPoint(lightP3, uNormal, dirToCamera);
 	finalResult += CalcLightSpot(lightS, uNormal, dirToCamera);
 
 	FragColor = vec4(finalResult, 1.0f);
+	//FragColor = vec4(1.0, 1.0, 1.0, 1.0);
 }   

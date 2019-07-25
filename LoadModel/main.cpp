@@ -11,6 +11,9 @@
 #include "LightPoint.h"
 #include "LightSpot.h"
 
+#include "Mesh.h"
+#include "Model.h"
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -149,7 +152,10 @@ unsigned int LoadImageToGPU(const char* fileName, GLint internalFormat, GLenum f
 	return TexBuffer; // return texture's id
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+
+	std::string exePath = argv[0];
+	//std::cout << exePath.substr(0, exePath.find_last_of('\\')) + "\\model\\nanosuit.obj" << std::endl;
 
 	#pragma region Open a Window
 		glfwInit();
@@ -202,24 +208,26 @@ int main() {
 	#pragma endregion
 
 	#pragma region Init and Load Models to VAO, VBO
-		unsigned int VBO, VAO;
-		glGenVertexArrays(1, &VAO);
-		glGenBuffers(1, &VBO);
-
-		glBindVertexArray(VAO);
-
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-		// position attribute
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
-		// normal attribute
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-		glEnableVertexAttribArray(1);
-		// texture coord attribute
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-		glEnableVertexAttribArray(2);
+		//Mesh cube(vertices);
+		Model model(exePath.substr(0, exePath.find_last_of('\\')) + "\\model\\nanosuit.obj");
+		//unsigned int VBO, VAO;
+		//glGenVertexArrays(1, &VAO);
+		//glGenBuffers(1, &VBO);
+		//
+		//glBindVertexArray(VAO);
+		//
+		//glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		//
+		//// position attribute
+		//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+		//glEnableVertexAttribArray(0);
+		//// normal attribute
+		//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+		//glEnableVertexAttribArray(1);
+		//// texture coord attribute
+		//glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+		//glEnableVertexAttribArray(2);
 	#pragma endregion
 
 	#pragma region Init and Load Textures
@@ -238,6 +246,9 @@ int main() {
 			viewMat = camera.GetViewMatrix();
 			projectMat = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / SCR_HEIGHT, 
 				0.1f, 100.0f);
+
+			myShader->setMat4("viewMat", viewMat);
+			myShader->setMat4("projectMat", projectMat);
 		#pragma endregion
 
 		#pragma region pre-frame time of Camera
@@ -263,57 +274,57 @@ int main() {
 		//glBindTexture(GL_TEXTURE_2D, myMaterial->specular);
 
 		/* Set Material -> Uniforms */
-		myShader->setMat4("viewMat", viewMat);
-		myShader->setMat4("projectMat", projectMat);
-
-		myShader->setVec3("objColor", 1.0f, 1.0f, 1.0f);
-		myShader->setVec3("ambientColor", 0.1f, 0.1f, 0.1f);
-
-		myShader->setVec3("lightD.pos", lightD.position);
-		myShader->setVec3("lightD.dirToLight", lightD.direction);
-		myShader->setVec3("lightD.color", lightD.color);
-
-		myShader->setVec3("lightP0.pos", lightP0.position);
-		myShader->setVec3("lightP0.color", lightP0.color);
-		myShader->setFloat("lightP0.constant", lightP0.constant);
-		myShader->setFloat("lightP0.linear", lightP0.linear);
-		myShader->setFloat("lightP0.quadratic", lightP0.quadratic);
-
-		myShader->setVec3("lightP1.pos", lightP1.position);
-		myShader->setVec3("lightP1.color", lightP1.color);
-		myShader->setFloat("lightP1.constant", lightP1.constant);
-		myShader->setFloat("lightP1.linear", lightP1.linear);
-		myShader->setFloat("lightP1.quadratic", lightP1.quadratic);
-
-		myShader->setVec3("lightP2.pos", lightP2.position);
-		myShader->setVec3("lightP2.color", lightP2.color);
-		myShader->setFloat("lightP2.constant", lightP2.constant);
-		myShader->setFloat("lightP2.linear", lightP2.linear);
-		myShader->setFloat("lightP2.quadratic", lightP2.quadratic);
-
-		myShader->setVec3("lightP3.pos", lightP3.position);
-		myShader->setVec3("lightP3.color", lightP3.color);
-		myShader->setFloat("lightP3.constant", lightP3.constant);
-		myShader->setFloat("lightP3.linear", lightP3.linear);
-		myShader->setFloat("lightP3.quadratic", lightP3.quadratic);
-
-		myShader->setVec3("lightS.pos", lightS.position);
-		myShader->setVec3("lightS.color", lightS.color);
-		myShader->setFloat("lightS.constant", lightS.constant);
-		myShader->setFloat("lightS.linear", lightS.linear);
-		myShader->setFloat("lightS.quadratic", lightS.quadratic);
-		myShader->setFloat("lightS.cosPhyInner", lightS.cosPhyInner);
-		myShader->setFloat("lightS.cosPhyOutter", lightS.cosPhyOutter);
-
-		myShader->setVec3("cameraPos", camera.Position);
-
 		myMaterial->shader->setVec3("material.ambient", myMaterial->ambient);
 		myMaterial->shader->setInt("material.diffuse", Shader::DIFFUSE);
 		myMaterial->shader->setInt("material.specular", Shader::SPECULAR);
 		//myMaterial->shader->setInt("material.emission", Shader::EMISSION);
 		myMaterial->shader->setFloat("material.shininess", myMaterial->shininess);
+
+		#pragma region Lights Shader
+				myShader->setVec3("objColor", 1.0f, 1.0f, 1.0f);
+				myShader->setVec3("ambientColor", 0.1f, 0.1f, 0.1f);
+
+				myShader->setVec3("lightD.pos", lightD.position);
+				myShader->setVec3("lightD.dirToLight", lightD.direction);
+				myShader->setVec3("lightD.color", lightD.color);
+
+				myShader->setVec3("lightP0.pos", lightP0.position);
+				myShader->setVec3("lightP0.color", lightP0.color);
+				myShader->setFloat("lightP0.constant", lightP0.constant);
+				myShader->setFloat("lightP0.linear", lightP0.linear);
+				myShader->setFloat("lightP0.quadratic", lightP0.quadratic);
+
+				myShader->setVec3("lightP1.pos", lightP1.position);
+				myShader->setVec3("lightP1.color", lightP1.color);
+				myShader->setFloat("lightP1.constant", lightP1.constant);
+				myShader->setFloat("lightP1.linear", lightP1.linear);
+				myShader->setFloat("lightP1.quadratic", lightP1.quadratic);
+
+				myShader->setVec3("lightP2.pos", lightP2.position);
+				myShader->setVec3("lightP2.color", lightP2.color);
+				myShader->setFloat("lightP2.constant", lightP2.constant);
+				myShader->setFloat("lightP2.linear", lightP2.linear);
+				myShader->setFloat("lightP2.quadratic", lightP2.quadratic);
+
+				myShader->setVec3("lightP3.pos", lightP3.position);
+				myShader->setVec3("lightP3.color", lightP3.color);
+				myShader->setFloat("lightP3.constant", lightP3.constant);
+				myShader->setFloat("lightP3.linear", lightP3.linear);
+				myShader->setFloat("lightP3.quadratic", lightP3.quadratic);
+
+				myShader->setVec3("lightS.pos", lightS.position);
+				myShader->setVec3("lightS.color", lightS.color);
+				myShader->setFloat("lightS.constant", lightS.constant);
+				myShader->setFloat("lightS.linear", lightS.linear);
+				myShader->setFloat("lightS.quadratic", lightS.quadratic);
+				myShader->setFloat("lightS.cosPhyInner", lightS.cosPhyInner);
+				myShader->setFloat("lightS.cosPhyOutter", lightS.cosPhyOutter);
+		#pragma endregion
+
+		myShader->setVec3("cameraPos", camera.Position);
+
 		/* Drawcall */
-		for (unsigned int i = 0; i < 10; i++)
+		for (unsigned int i = 0; i < 1; i++)
 		{
 			// Set Model matrix
 			modelMat = glm::mat4(1.0f);
@@ -324,8 +335,10 @@ int main() {
 
 			myShader->setMat4("modelMat", modelMat);
 			// Set Model
-			glBindVertexArray(VAO);
-			glDrawArrays(GL_TRIANGLES, 0, 36);
+			//glBindVertexArray(VAO);
+			//glDrawArrays(GL_TRIANGLES, 0, 36);
+			//cube.Draw(myMaterial->shader);
+			model.Draw(myMaterial->shader);
 		}
 
 		// Clean up, prepare for next render loop
